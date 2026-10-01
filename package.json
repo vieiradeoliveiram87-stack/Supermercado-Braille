@@ -1,11 +1,27 @@
 {
+  "name": "supermercado-acessivel",
+  "version": "1.0.0",
+  "description": "Sistema de acessibilidade para supermercados",
+  "main": "dist/server.js",
+  "scripts": {
+    "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js"
+  },
+  "keywords": [
+    "acessibilidade",
+    "supermercado",
+    "deficiencia-visual"
+  ],
+  "author": "",
+  "license": "ISC",
   "dependencies": {
-    "express": "^5.2.1"
+    "express": "^5.1.0"
   },
   "devDependencies": {
-    "@types/express": "^5.0.6",
-    "@types/node": "^26.6.2",
+    "@types/express": "^5.0.5",
+    "@types/node": "^24.6.0",
     "ts-node-dev": "^2.0.0",
-    "typescript": "^7.0.2"
+    "typescript": "^5.9.3"
   }
 }

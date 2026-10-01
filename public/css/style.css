@@ -1,0 +1,105 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #ffffff;
+    color: #111111;
+    min-height: 100vh;
+}
+
+.container {
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 25px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+h1 {
+    font-size: 32px;
+    margin-bottom: 15px;
+}
+
+h2 {
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+
+p {
+    font-size: 20px;
+    line-height: 1.5;
+}
+
+.principal {
+    border: 3px solid #111111;
+    border-radius: 15px;
+    padding: 25px;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+#status {
+    margin-bottom: 20px;
+}
+
+.botao-principal,
+.botao-comando {
+    width: 100%;
+    padding: 20px;
+    margin-top: 15px;
+    border: 3px solid #111111;
+    border-radius: 12px;
+    background-color: #eeeeee;
+    color: #111111;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.botao-principal {
+    font-size: 24px;
+    padding: 25px;
+}
+
+.botao-principal:hover,
+.botao-comando:hover {
+    background-color: #dddddd;
+}
+
+.comandos {
+    border: 3px solid #111111;
+    border-radius: 15px;
+    padding: 25px;
+}
+
+@media (max-width: 600px) {
+
+    .container {
+        padding: 15px;
+    }
+
+    h1 {
+        font-size: 28px;
+    }
+
+    h2 {
+        font-size: 22px;
+    }
+
+    p {
+        font-size: 18px;
+    }
+
+    .botao-principal,
+    .botao-comando {
+        font-size: 19px;
+    }
+}
