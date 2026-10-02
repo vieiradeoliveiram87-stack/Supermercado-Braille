@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
-import { produtos, mapa } from '../data/produtos';
+import { produtos, mapa } from '../data/produtos.js'; // Adicionado .js no final
+
 
 export const buscarProduto = (req: Request, res: Response): any => {
   const { nome } = req.query;
