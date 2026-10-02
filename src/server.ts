@@ -1,21 +1,17 @@
-import express from "express";
-import path from "path";
+import express from 'express';
+import path from 'path';
+import marketRoutes from './routes/marketRoutes';
 
 const app = express();
-
-const PORT = 3000;
-
 app.use(express.json());
 
-app.use(express.static(path.join(__dirname, "../public")));
+// Serve a pasta public (frontend) de forma estática
+app.use(express.static(path.join(__dirname, '../public')));
 
-app.get("/health", (req, res) => {
-    res.json({
-        status: "online",
-        mensagem: "Supermercado Acessível funcionando!"
-    });
-});
+// Ativa as rotas da API
+app.use('/api', marketRoutes);
 
+const PORT = 3000;
 app.listen(PORT, () => {
-    console.log(`Servidor funcionando em http://localhost:${PORT}`);
+  console.log(`Servidor acessível rodando em http://localhost:${PORT}`);
 });
