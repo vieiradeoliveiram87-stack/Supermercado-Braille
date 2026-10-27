@@ -1,5 +1,9 @@
+
 import { Router } from 'express';
-import { buscarProduto, calcularRota } from '../controllers/marketController';
+import {
+  buscarProduto,
+  calcularRota
+} from '../controllers/markerController.js';
 
 const router = Router();
 
