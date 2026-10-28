@@ -1,78 +1,406 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
-    <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <title>Supermercado Acessível</title>
-
-    <link
-        rel="stylesheet"
-        href="/css/style.css"
-    >
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#102c49">
+  <title>Supermercado Acessível</title>
+  <link rel="stylesheet" href="/css/style.css?v=101">
 </head>
-
 <body>
 
-    <main class="container">
+  <a class="pular-conteudo" href="#inicio">
+    Ir para o conteúdo
+  </a>
 
-        <header>
-            <h1>Supermercado Acessível</h1>
+  <header class="cabecalho">
+    <a class="marca" href="#inicio" aria-label="Supermercado Acessível - início">
+  
+      <span class="marca-icone">
+        <img
+          src="/img/logo-supermercado - Copia.png"
+          alt="Logo do Supermercado Acessível"
+        >
+      </span>
+  
+      <span class="marca-nome">
+        Supermercado
+        <strong>Acessível</strong>
+      </span>
+  
+    </a>
 
-            <p>
-                Sistema de orientação por voz para pessoas
-                com deficiência visual.
-            </p>
-        </header>
+    <nav class="navegacao" aria-label="Navegação principal">
+      <a href="#inicio">Início</a>
+      <a href="#busca">Buscar produtos</a>
+      <a href="#setores">Setores</a>
+      <a href="#mapa">Mapa</a>
+      <a href="#sobre">Sobre</a>
+    </nav>
 
-        <section class="principal">
+    <div class="cabecalho-direita">
+      <img
+        src="/img/logo.png"
+        alt="Logo do projeto"
+        class="logo-site"
+        onerror="this.style.display='none'"
+      >
+      <button type="button" class="botao-topo" id="btnVozTopo">
+        🎙 Comando de voz
+      </button>
+    </div>
+  </header>
 
-            <h2>Como podemos ajudar?</h2>
+  <main>
 
-            <p id="status">
-                Pressione o botão para começar.
-            </p>
+    <!-- APRESENTAÇÃO PRINCIPAL -->
+    <section class="hero" id="inicio" aria-labelledby="tituloPrincipal">
 
-            <button
-                id="btnComecar"
-                class="botao-principal"
+      <div class="hero-conteudo">
+        <span class="hero-etiqueta">
+          TECNOLOGIA A SERVIÇO DA INCLUSÃO
+        </span>
+
+        <h1 id="tituloPrincipal">
+          Mais autonomia para encontrar
+          <span>o que você precisa.</span>
+        </h1>
+
+        <p class="hero-descricao">
+          Encontre produtos, setores e orientações
+          demonstrativas dentro do supermercado
+          com comandos simples e respostas faladas.
+        </p>
+
+        <button
+          type="button"
+          id="btnComecar"
+          class="botao-voz"
+          aria-label="Iniciar comando de voz"
+        >
+          🎙 Iniciar comando de voz
+        </button>
+
+        <p class="hero-ajuda">
+          Toque no botão e diga, por exemplo:
+          "Quero encontrar leite".
+        </p>
+        <div class="beneficios">
+
+          <!-- BOTÃO 1: ORIENTAÇÕES FALADAS -->
+          <button type="button" class="beneficio" id="atalhoAudio">
+            <span class="beneficio-icone" aria-hidden="true">🔊</span>
+            <strong>Orientações faladas</strong>
+            <small>Respostas em áudio</small>
+          </button>
+        
+          <!-- BOTÃO 2: BUSCA DE PRODUTOS -->
+          <button type="button" class="beneficio" id="atalhoBusca">
+            <span class="beneficio-icone" aria-hidden="true">🔍</span>
+            <strong>Busca de produtos</strong>
+            <small>Encontre o setor</small>
+          </button>
+        
+          <!-- BOTÃO 3: ROTAS DEMONSTRATIVAS -->
+          <button type="button" class="beneficio" id="atalhoMapa">
+            <span class="beneficio-icone" aria-hidden="true">➜</span>
+            <strong>Rotas demonstrativas</strong>
+            <small>Conheça os corredores</small>
+          </button>
+        
+        </div>
+        </div>
+
+      <div class="hero-imagem">
+        <img
+        src="/img/supermercado.png.png"
+        alt="Mulher com deficiência visual em um estabelecimento comercial"
+      >
+      </div>
+
+    </section>
+
+    <!-- STATUS -->
+    <div class="status" id="status" role="status" aria-live="polite">
+      Assistente pronto. Você pode falar ou digitar um produto.
+    </div>
+
+    <div class="conteudo">
+
+      <!-- BUSCA -->
+      <section class="secao" id="busca">
+        <div class="cabecalho-secao">
+          <span class="subtitulo">BUSCA DE PRODUTOS</span>
+          <h2>O que você procura?</h2>
+          <p>Digite o nome do produto ou utilize o assistente de voz.</p>
+        </div>
+
+        <form id="formBusca" class="form-busca">
+          <label for="campoProduto">Nome do produto</label>
+
+          <div class="busca-linha">
+            <input
+              id="campoProduto"
+              type="search"
+              placeholder="Ex.: leite, arroz, pão..."
+              autocomplete="off"
             >
-                🎤 Começar
+            <button type="submit">Buscar produto</button>
+          </div>
+        </form>
+
+        <div class="sugestoes">
+          <span>Mais procurados:</span>
+          <button type="button" data-busca="Leite">Leite</button>
+          <button type="button" data-busca="Arroz">Arroz</button>
+          <button type="button" data-busca="Sabão">Sabão</button>
+        </div>
+      </section>
+
+      <!-- ORIENTAÇÃO -->
+      <section class="secao" id="orientacao">
+        <div class="cabecalho-secao">
+          <span class="subtitulo">ASSISTENTE DE ORIENTAÇÃO</span>
+          <h2>Sua orientação</h2>
+          <p>Acompanhe as informações fornecidas pelo assistente.</p>
+        </div>
+
+        <div class="painel-orientacao">
+          <div class="painel-topo">
+            <span class="icone-painel" aria-hidden="true">🔊</span>
+
+            <div>
+              <strong id="tituloResposta">Pronto para ajudar</strong>
+              <p id="respostaTexto">
+                Escolha um produto ou utilize o comando de voz.
+              </p>
+            </div>
+          </div>
+
+          <ol
+            id="listaPassos"
+            class="lista-passos"
+            aria-label="Etapas da rota demonstrativa"
+          ></ol>
+
+          <div class="acoes">
+            <button type="button" id="btnRepetir">
+              Ouvir novamente
+            </button>
+            <button type="button" id="btnParar" class="botao-secundario">
+              Parar áudio
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- SETORES -->
+      <section class="secao" id="setores">
+        <div class="cabecalho-secao">
+          <span class="subtitulo">EXPLORE A LOJA</span>
+          <h2>Conheça os setores</h2>
+          <p>Selecione um setor para receber orientações demonstrativas.</p>
+        </div>
+
+        <div class="grade-setores">
+
+          <button
+            type="button"
+            class="cartao-setor"
+            data-comando="Onde fica a padaria?"
+          >
+            <span class="setor-icone" aria-hidden="true">🥖</span>
+            <strong>Padaria</strong>
+            <small>Corredor 01</small>
+          </button>
+
+          <button
+            type="button"
+            class="cartao-setor"
+            data-comando="Onde fica a mercearia?"
+          >
+            <span class="setor-icone" aria-hidden="true">🛒</span>
+            <strong>Mercearia</strong>
+            <small>Corredor 02</small>
+          </button>
+
+          <button
+            type="button"
+            class="cartao-setor"
+            data-comando="Onde fica o setor de laticínios?"
+          >
+            <span class="setor-icone" aria-hidden="true">🥛</span>
+            <strong>Laticínios</strong>
+            <small>Corredor 03</small>
+          </button>
+
+          <button
+            type="button"
+            class="cartao-setor"
+            data-comando="Onde fica o açougue?"
+          >
+            <span class="setor-icone" aria-hidden="true">🥩</span>
+            <strong>Açougue</strong>
+            <small>Corredor 04</small>
+          </button>
+
+          <button
+            type="button"
+            class="cartao-setor"
+            data-comando="Onde fica o setor de limpeza?"
+          >
+            <span class="setor-icone" aria-hidden="true">🧼</span>
+            <strong>Limpeza</strong>
+            <small>Corredor 05</small>
+          </button>
+
+        </div>
+      </section>
+
+      <!-- LOCALIZAÇÃO -->
+      <section class="secao" id="localizacao">
+        <div class="cabecalho-secao">
+          <span class="subtitulo">LOCALIZAÇÃO DEMONSTRATIVA</span>
+          <h2>Onde você está?</h2>
+          <p>Escolha uma posição fictícia para testar as orientações.</p>
+        </div>
+
+        <div class="localizacao-card">
+          <label for="corredorAtual">Posição simulada</label>
+
+          <select id="corredorAtual">
+            <option value="0">Entrada do supermercado</option>
+            <option value="1">Corredor 1 — Padaria</option>
+            <option value="2">Corredor 2 — Mercearia</option>
+            <option value="3">Corredor 3 — Laticínios</option>
+            <option value="4">Corredor 4 — Açougue</option>
+            <option value="5">Corredor 5 — Limpeza</option>
+          </select>
+
+          <div class="acoes-localizacao">
+            <button type="button" data-comando="Onde estou?">
+              Onde estou?
             </button>
 
-        </section>
-
-        <section class="comandos">
-
-            <h2>Comandos disponíveis</h2>
-
-            <button class="botao-comando">
-                 Onde estou?
+            <button type="button" data-comando="O que tem à minha frente?">
+              O que há à minha frente?
             </button>
+          </div>
 
-            <button class="botao-comando">
-                 Quero encontrar leite
-            </button>
+          <p class="aviso">
+            A localização é simulada. O protótipo não identifica
+            sua posição real nem detecta obstáculos.
+          </p>
+        </div>
+      </section>
 
-            <button class="botao-comando">
-                 Onde fica a padaria?
-            </button>
+      <!-- MAPA -->
+      <section class="secao" id="mapa">
+        <div class="cabecalho-secao">
+          <span class="subtitulo">VISÃO DA LOJA</span>
+          <h2>Mapa do supermercado</h2>
+          <p>Visualize a organização ilustrativa dos corredores.</p>
+        </div>
 
-            <button class="botao-comando">
-                 O que tem à minha frente?
-            </button>
+        <div class="mapa-card">
+          <img
+            src="/img/mapa-supermercado.png"
+            alt="Mapa ilustrativo dos corredores do supermercado"
+            onerror="this.style.display='none'"
+          >
 
-        </section>
+          <p>
+            O mapa é demonstrativo e ainda não está conectado
+            a um sistema de localização em tempo real.
+          </p>
+        </div>
+      </section>
 
-    </main>
+      <!-- SOBRE -->
+      <section class="secao sobre" id="sobre">
+        <div>
+          <span class="subtitulo">TECNOLOGIA E INCLUSÃO</span>
+          <h2>Sobre o projeto</h2>
+          <p>
+            O Supermercado Acessível é uma plataforma digital
+            desenvolvida para facilitar a experiência de compra
+            de pessoas com deficiência visual.
+          
+            Por meio de comandos de voz, busca de produtos e
+            orientações faladas, a plataforma busca tornar
+            o acesso às informações do supermercado mais
+            simples, acessível e independente.
+          </p>
+        </div>
+      </section>
 
-    <script src="/js/app.js"></script>
+    </div>
+  </main>
 
+  <footer class="rodape">
+    <strong>Supermercado Acessível</strong>
+    <p>Sua compra, seu caminho.</p>
+    <small>
+      Tecnologia para promover acessibilidade,
+      inclusão e autonomia nas compras.
+    </small>
+    <small>
+      As rotas são demonstrativas e não oferecem
+      localização ou detecção de obstáculos em tempo real.
+    </small>
+  </footer>
+
+  <script src="/js/audio.js"></script>
+  <script src="/js/mapa.js"></script>
+  <script src="/js/voz.js"></script>
+  <script src="/js/app.js"></script>
+
+  <script>
+    // Faz o botão do cabeçalho acionar o botão principal.
+    document.getElementById("btnVozTopo")
+      .addEventListener("click", function () {
+        document.getElementById("btnComecar").click();
+      });
+  </script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+  
+    // BOTÃO DE ÁUDIO
+    document.getElementById("atalhoAudio")?.addEventListener("click", () => {
+      if ("speechSynthesis" in window) {
+        speechSynthesis.cancel();
+  
+        const mensagem = new SpeechSynthesisUtterance(
+          "Bem-vindo ao Supermercado Acessível. Você pode buscar produtos e consultar os setores do supermercado."
+        );
+  
+        mensagem.lang = "pt-BR";
+        speechSynthesis.speak(mensagem);
+      } else {
+        alert("Seu navegador não oferece suporte à leitura em voz alta.");
+      }
+    });
+  
+    // BOTÃO DE BUSCA
+    document.getElementById("atalhoBusca")?.addEventListener("click", () => {
+      document.getElementById("busca")?.scrollIntoView({
+        behavior: "smooth"
+      });
+  
+      document.getElementById("campoProduto")?.focus({
+        preventScroll: true
+      });
+    });
+  
+    // BOTÃO DO MAPA
+    document.getElementById("atalhoMapa")?.addEventListener("click", () => {
+      document.getElementById("mapa")?.scrollIntoView({
+        behavior: "smooth"
+      });
+    });
+  
+  });
+  </script>
 </body>
-
 </html>
