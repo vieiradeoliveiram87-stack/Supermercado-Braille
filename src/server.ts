@@ -6,7 +6,8 @@ import produtoRoutes from "./routes/produtoRoutes";
 import comandoRoutes from "./routes/comandoRoutes";
 
 const app = express();
-const PORT = 3000;
+
+const PORT = Number(process.env.PORT) || 3000;
 
 app.use(express.json());
 
@@ -28,8 +29,6 @@ app.get("/health", (req, res) => {
   });
 });
 
-
 app.listen(PORT, "0.0.0.0", () => {
-  console.log(`Servidor funcionando em http://localhost:${PORT}`);
-  console.log(`Acesso pela rede: http://10.3.2.58:${PORT}`);
+  console.log(`Servidor funcionando na porta ${PORT}`);
 });
