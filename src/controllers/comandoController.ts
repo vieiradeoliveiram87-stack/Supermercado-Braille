@@ -1,3 +1,4 @@
+
 import { Request, Response } from "express";
 import { produtos } from "../data/produtos";
 
@@ -10,103 +11,150 @@ const setores = [
 ];
 
 function normalizar(texto: string): string {
-  return texto.normalize("NFD")
+  return texto
+    .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase();
+    .toLowerCase()
+    .replace(/[^\p{L}\p{N}\s]/gu, " ")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
-function criarRota(origem: number, destino: number): string[] {
+function contemTermo(frase: string, termo: string): boolean {
+  const palavras = normalizar(frase).split(" ");
+  const termoNormalizado = normalizar(termo);
+
+  return palavras.some(palavra =>
+    palavra === termoNormalizado ||
+    palavra === `${termoNormalizado}s` ||
+    palavra === `${termoNormalizado}es`
+  );
+}
+
+function criarRota(
+  origem: number,
+  destino: number
+): string[] {
   if (origem === destino) {
-    return [`Você já está no corredor ${destino}.`];
+    return [
+      `Na simulação, você já está no corredor ${destino}.`
+    ];
   }
 
   const passos: string[] = [];
 
-  if (origem === 0) {
-    passos.push("Partindo da entrada da loja.");
-  } else {
-    passos.push(`Partindo do corredor ${origem}.`);
-  }
+  passos.push(
+    origem === 0
+      ? "Ponto inicial: entrada do supermercado."
+      : `Ponto inicial: corredor ${origem}.`
+  );
 
   const direcao = destino > origem ? 1 : -1;
 
   for (
     let corredor = origem + direcao;
-    direcao > 0 ? corredor <= destino : corredor >= destino;
+    direcao > 0
+      ? corredor <= destino
+      : corredor >= destino;
     corredor += direcao
   ) {
-    passos.push(`Próximo ponto da simulação: corredor ${corredor}.`);
+    passos.push(
+      `Próximo ponto demonstrativo: corredor ${corredor}.`
+    );
   }
 
-  passos.push(`Destino: corredor ${destino}.`);
+  passos.push(
+    `Destino demonstrativo: corredor ${destino}.`
+  );
 
   return passos;
 }
 
-export function processarComando(req: Request, res: Response) {
-  const comando = normalizar(String(req.body.comando || "").trim());
+export function processarComando(
+  req: Request,
+  res: Response
+) {
+  const comandoOriginal = req.body?.comando;
 
-  const origemRecebida = Number(req.body.corredorAtual);
+  if (
+    typeof comandoOriginal !== "string" ||
+    !comandoOriginal.trim()
+  ) {
+    return res.status(400).json({
+      tipo: "erro",
+      erro: "Informe um produto ou comando válido."
+    });
+  }
+
+  const comando = normalizar(comandoOriginal);
+  const origem = Number(req.body?.corredorAtual);
+
   const corredorAtual =
-    Number.isInteger(origemRecebida) &&
-    origemRecebida >= 0 &&
-    origemRecebida <= 5
-      ? origemRecebida
+    Number.isInteger(origem) &&
+    origem >= 0 &&
+    origem <= 5
+      ? origem
       : 0;
 
-  if (!comando) {
-    return res.status(400).json({
-      resposta: "Não recebi nenhum comando."
-    });
-  }
-
-  if (comando.includes("onde estou")) {
+  if (
+    comando.includes("onde estou") ||
+    comando.includes("minha localizacao") ||
+    comando.includes("minha posicao")
+  ) {
     return res.json({
       tipo: "localizacao",
-      resposta: corredorAtual === 0
-        ? "Na simulação, sua posição está marcada na entrada."
-        : `Na simulação, sua posição está marcada no corredor ${corredorAtual}.`
+      resposta:
+        corredorAtual === 0
+          ? "Na simulação, sua posição está na entrada."
+          : `Na simulação, sua posição está no corredor ${corredorAtual}.`
     });
   }
 
-  if (comando.includes("minha frente")) {
+  if (
+    comando.includes("minha frente") ||
+    comando.includes("obstaculo")
+  ) {
     return res.json({
       tipo: "ambiente",
       resposta:
-        "Ainda não consigo detectar objetos ou obstáculos à sua frente. Posso informar os setores cadastrados no mapa demonstrativo."
+        "O aplicativo não identifica obstáculos ou objetos em tempo real. O mapa e as orientações são demonstrativos."
     });
   }
 
   const produto = produtos.find(item =>
-    comando.includes(normalizar(item.nome))
+    contemTermo(comando, item.nome)
   );
 
   const setor = setores.find(item =>
-    comando.includes(normalizar(item.nome))
+    contemTermo(comando, item.nome)
   );
 
-  const destino = produto?.corredor ?? setor?.corredor;
+  const destino =
+    produto?.corredor ?? setor?.corredor;
 
   if (destino !== undefined) {
-    const nomeDestino = produto?.nome ?? setor?.nome ?? "Destino";
+    const nomeDestino =
+      produto?.nome ?? setor?.nome ?? "Destino";
+
     const rota = criarRota(corredorAtual, destino);
 
     const descricao = produto
-      ? `${produto.nome} está cadastrado no setor de ${produto.setor}, corredor ${produto.corredor}, ${produto.posicao}.`
-      : `O setor de ${setor?.nome} está cadastrado no corredor ${destino}.`;
+      ? `${produto.nome}: setor ${produto.setor}, corredor ${produto.corredor}, ${produto.posicao}.`
+      : `Setor ${setor?.nome}: corredor ${destino}.`;
 
     return res.json({
       tipo: "rota",
       destino: nomeDestino,
       corredor: destino,
       rota,
-      resposta: `${descricao} Vou apresentar uma rota simulada. ${rota.join(" ")}`
+      resposta:
+        `${descricao} Rota demonstrativa: ${rota.join(" ")}`
     });
   }
 
   return res.json({
     tipo: "nao_encontrado",
     resposta:
-      "Não encontrei esse produto ou setor. Tente dizer leite, arroz, padaria ou limpeza."
+      "Produto ou setor não encontrado. Você pode tentar leite, arroz, feijão, pão, limpeza ou padaria."
   });
 }

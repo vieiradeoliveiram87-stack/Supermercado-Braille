@@ -1,60 +1,80 @@
-let reconhecimentoAtivo = null;
+
+const SpeechRecognition =
+  window.SpeechRecognition ||
+  window.webkitSpeechRecognition;
+
+let reconhecimento = null;
 
 function iniciarReconhecimento() {
-  const API =
-    window.SpeechRecognition ||
-    window.webkitSpeechRecognition;
+  const status = document.getElementById("status");
 
-  if (!API) {
-    atualizarStatus(
-      "Reconhecimento de voz indisponível neste navegador. Use a busca por texto."
-    );
-    falar("Não foi possível ativar o microfone neste navegador.");
+  if (!SpeechRecognition) {
+    if (status) {
+      status.textContent =
+        "Seu navegador não suporta reconhecimento de voz.";
+    }
     return;
   }
 
-  if (reconhecimentoAtivo) {
-    reconhecimentoAtivo.abort();
+  if (reconhecimento) {
+    reconhecimento.abort();
   }
 
-  const reconhecimento = new API();
-  reconhecimentoAtivo = reconhecimento;
-
+  reconhecimento = new SpeechRecognition();
   reconhecimento.lang = "pt-BR";
   reconhecimento.continuous = false;
   reconhecimento.interimResults = false;
-  reconhecimento.maxAlternatives = 1;
-
-  const botao = document.getElementById("btnComecar");
 
   reconhecimento.onstart = () => {
-    botao.disabled = true;
-    atualizarStatus("Estou ouvindo. Pode falar o produto ou setor.");
+    if (status) status.textContent = "🎙 Estou ouvindo...";
   };
 
   reconhecimento.onresult = (evento) => {
-    const comando = evento.results[0][0].transcript;
-    atualizarStatus(`Comando reconhecido: ${comando}`);
-    enviarComando(comando);
+    const texto = evento.results[0][0].transcript;
+
+    if (status) status.textContent = "Você disse: " + texto;
+
+    const campo = document.getElementById("campoProduto");
+    if (campo) campo.value = texto;
+
+    if (typeof enviarComando === "function") {
+      enviarComando(texto);
+    } else {
+      falar("Você disse: " + texto);
+    }
   };
 
   reconhecimento.onerror = (evento) => {
-    const mensagem = evento.error === "not-allowed"
-      ? "Permissão do microfone negada. Autorize o acesso nas configurações do navegador."
-      : "Não consegui reconhecer sua voz. Tente novamente.";
-
-    atualizarStatus(mensagem);
+    if (status) {
+      status.textContent =
+        "Erro no microfone: " + evento.error;
+    }
+    console.error("Erro de reconhecimento:", evento.error);
   };
 
   reconhecimento.onend = () => {
-    botao.disabled = false;
-    reconhecimentoAtivo = null;
+    reconhecimento = null;
   };
 
   try {
     reconhecimento.start();
   } catch (erro) {
-    botao.disabled = false;
-    atualizarStatus("Não foi possível iniciar o reconhecimento de voz.");
+    console.error("Não foi possível iniciar o microfone:", erro);
   }
+}
+
+function falar(texto) {
+  if (!("speechSynthesis" in window)) {
+    alert("Seu navegador não suporta reprodução de voz.");
+    return;
+  }
+
+  speechSynthesis.cancel();
+
+  const mensagem = new SpeechSynthesisUtterance(texto);
+  mensagem.lang = "pt-BR";
+  mensagem.rate = 0.9;
+  mensagem.volume = 1;
+
+  speechSynthesis.speak(mensagem);
 }

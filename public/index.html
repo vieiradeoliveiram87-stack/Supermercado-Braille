@@ -115,7 +115,7 @@
       <div class="hero-imagem">
         <img
         src="/img/supermercado.png.png"
-        alt="Mulher com deficiência visual em um estabelecimento comercial"
+        alt="Pessoa com deficiência visual em um supermercado"
       >
       </div>
 
@@ -172,7 +172,7 @@
 
             <div>
               <strong id="tituloResposta">Pronto para ajudar</strong>
-              <p id="respostaTexto">
+              <p id="respostaTexto" aria-live="polite">
                 Escolha um produto ou utilize o comando de voz.
               </p>
             </div>
@@ -185,14 +185,88 @@
           ></ol>
 
           <div class="acoes">
-            <button type="button" id="btnRepetir">
-              Ouvir novamente
-            </button>
-            <button type="button" id="btnParar" class="botao-secundario">
-              Parar áudio
-            </button>
-          </div>
-        </div>
+           
+<div class="acoes">
+  <button type="button" id="btnRepetir">
+    Ouvir novamente
+  </button>
+  
+<button type="button" id="testeSom">
+  🔊 Testar som do aplicativo
+</button>
+
+<script>
+  document.getElementById("testeSom").addEventListener("click", () => {
+    if (!("speechSynthesis" in window)) {
+      alert("Este navegador não suporta voz.");
+      return;
+    }
+
+    const sintetizador = window.speechSynthesis;
+    sintetizador.cancel();
+
+    const mensagem = new SpeechSynthesisUtterance(
+      "Olá! Eu sou o assistente do Supermercado Acessível. O leite está no corredor três. Esta é uma demonstração."
+    );
+
+    mensagem.lang = "pt-BR";
+    mensagem.volume = 1;
+    mensagem.rate = 0.9;
+
+    mensagem.onstart = () => {
+      document.getElementById("status").textContent =
+        "Reproduzindo áudio...";
+    };
+
+    mensagem.onerror = (erro) => {
+      document.getElementById("status").textContent =
+        "Erro ao reproduzir áudio: " + erro.error;
+    };
+
+    mensagem.onend = () => {
+      document.getElementById("status").textContent =
+        "Áudio finalizado.";
+    };
+
+    sintetizador.speak(mensagem);
+  });
+</script>
+
+
+  <button
+  type="button"
+  id="btnTestarVoz"
+  onclick="window.speechSynthesis.speak(
+    new SpeechSynthesisUtterance(
+      'Olá! Bem-vindo ao Supermercado Acessível!'
+    )
+  )"
+>
+  🔊 Testar áudio
+</button>
+
+  <button type="button" id="btnParar" class="botao-secundario">
+    Parar áudio
+  </button>
+
+  <button type="button" id="btnProximo" disabled>
+    Próximo passo
+  </button>
+
+  <button type="button" id="btnNovaBusca">
+    Nova busca
+  </button>
+
+  <label class="controle-voz" for="usarVozApp">
+    <input
+      type="checkbox"
+      id="usarVozApp"
+      checked
+    >
+    Respostas automáticas por voz
+  </label>
+</div>
+
       </section>
 
       <!-- SETORES -->
@@ -356,6 +430,37 @@
   <script src="/js/voz.js"></script>
   <script src="/js/app.js"></script>
 
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const botao = document.getElementById("btnComecar");
+      const status = document.getElementById("status");
+  
+      if (!botao) {
+        console.error("Botão btnComecar não encontrado.");
+        return;
+      }
+  
+      botao.addEventListener("click", () => {
+        if (status) {
+          status.textContent = "🎙 Preparando o microfone...";
+        }
+  
+        if (typeof iniciarReconhecimento === "function") {
+          iniciarReconhecimento();
+        } else {
+          if (status) {
+            status.textContent =
+              "Erro: a função de reconhecimento não foi carregada.";
+          }
+  
+          console.error(
+            "Verifique se /js/voz.js está carregando corretamente."
+          );
+        }
+      });
+    });
+  </script>
+  
   <script>
     // Faz o botão do cabeçalho acionar o botão principal.
     document.getElementById("btnVozTopo")

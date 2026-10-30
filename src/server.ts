@@ -28,6 +28,8 @@ app.get("/health", (req, res) => {
   });
 });
 
-app.listen(PORT, () => {
+
+app.listen(PORT, "0.0.0.0", () => {
   console.log(`Servidor funcionando em http://localhost:${PORT}`);
+  console.log(`Acesso pela rede: http://10.3.2.58:${PORT}`);
 });

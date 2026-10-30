@@ -899,3 +899,199 @@ select:focus-visible {
   align-items: center;
   gap: 12px;
 }
+
+/* Ajustes finais da interface */
+
+:root {
+  --azul-principal: #102c49;
+  --laranja-principal: #fa8c20;
+  --fundo-pagina: #f3f6fa;
+}
+
+body {
+  background-color: var(--fundo-pagina);
+}
+
+.conteudo {
+  width: 100%;
+  max-width: none;
+  margin: 0 auto;
+  padding: 24px 32px;
+  box-sizing: border-box;
+}
+
+.conteudo > section {
+  width: 100%;
+  max-width: none;
+  margin-left: 0;
+  margin-right: 0;
+  border-radius: 6px;
+}
+
+.secao,
+.card,
+.cartao,
+.beneficio {
+  border-radius: 6px;
+}
+
+button,
+input,
+select {
+  border-radius: 5px;
+}
+
+button,
+input,
+select {
+  min-height: 44px;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 3px solid #fa8c20;
+  outline-offset: 3px;
+}
+
+.marca {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.marca-icone {
+  width: 65px;
+  height: 65px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+  background: transparent;
+  border: none;
+}
+
+.marca-icone img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+@media (max-width: 768px) {
+  .conteudo {
+    padding: 16px 12px;
+  }
+
+  .conteudo > section {
+    border-radius: 5px;
+  }
+
+  .marca-icone {
+    width: 52px;
+    height: 52px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* MELHORIAS DE ACESSIBILIDADE E INTERFACE */
+
+.conteudo {
+  width: 100%;
+  max-width: none;
+  padding: 24px 32px;
+  box-sizing: border-box;
+}
+
+.conteudo > .secao,
+.conteudo > section {
+  width: 100%;
+  max-width: none;
+  border-radius: 6px;
+}
+
+button,
+input,
+select {
+  min-height: 44px;
+  border-radius: 5px;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 3px solid #fa8c20;
+  outline-offset: 3px;
+}
+
+button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.controle-voz {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  font-size: 14px;
+  color: #102c49;
+}
+
+.controle-voz input {
+  width: 20px;
+  height: 20px;
+  min-height: 20px;
+  accent-color: #fa8c20;
+}
+
+#listaPassos li {
+  padding: 10px 12px;
+  margin-bottom: 6px;
+  border-left: 3px solid #d6e1ed;
+}
+
+#listaPassos li[aria-current="step"] {
+  border-left-color: #fa8c20;
+  background: #fff4e8;
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .conteudo {
+    padding: 16px 12px;
+  }
+
+  .conteudo > .secao,
+  .conteudo > section {
+    border-radius: 5px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
